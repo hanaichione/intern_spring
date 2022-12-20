@@ -1,5 +1,6 @@
 package com.sinsiway.intern.service;
 
+import java.sql.Connection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,25 +16,36 @@ public class UserService {
 	@Autowired
 	private UserDAO userDao;
 	
-	public List<User> findAll(){
-		return userDao.findAll();
+	public List<User> findAll(Connection con){
+		return userDao.findAll(con);
 	}
 	
-	public User findOne(long database_id) {
-		return userDao.findOne(database_id);
+	public User findOne(Connection con, long database_id) {
+		return userDao.findOne(con, database_id);
 	}
 	
-	public void insert(long database_id, int type, String ip, int port, String database, String username,
+	public void insert(Connection con, long database_id, int type, String ip, int port, String database, String username,
 			String password) {
-		userDao.insert(database_id, type, ip, port, database, username, password);
+		userDao.insert(con, database_id, type, ip, port, database, username, password);
 	}
 	
-	public void update(long database_id, int type, String ip, int port, String database, String username,
+	public void update(Connection con, long database_id, int type, String ip, int port, String database, String username,
 			String password) {
-		userDao.update(database_id, type, ip, port, database, username, password);
+		userDao.update(con, database_id, type, ip, port, database, username, password);
 	}
 	
-	public void delete(long database_id) {
-		userDao.delete(database_id);
+	public void delete(Connection con, long database_id) {
+		userDao.delete(con, database_id);
+	}
+
+	public Connection connect() {
+		// TODO Auto-generated method stub
+		System.out.println("service에서 호출 성공");
+		return userDao.connect();
+	}
+
+	public void close(Connection con) {
+		// TODO Auto-generated method stub
+		userDao.close(con);
 	}
 }

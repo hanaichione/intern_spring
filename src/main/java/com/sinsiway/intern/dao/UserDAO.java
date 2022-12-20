@@ -7,8 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -20,19 +18,40 @@ public class UserDAO {
 	@Autowired
 	JdbcTemplate jt;
 	
+	public Connection connect() {
+		Connection con = null;
+		try {
+			System.out.println("dao에서 성공");
+			con = jt.getDataSource().getConnection();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return con;
+	}
+	
+	public String close(Connection con) {
+		if (con!=null)
+			try {
+				con.close();
+				return "접속 종료";
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		return "접속 종료 실패";
+	}
+	
 	// 모두 조회하기
-	public List<User> findAll() {
+	public List<User> findAll(Connection con) {
 		// 받아온 레코드들을 담을 리스트
 		List<User> list = new ArrayList<User>();
 
 		// 필요한 자원
-		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
 		try {
-			con = jt.getDataSource().getConnection();
-			
 			String sql = "select * from sw_database";
 			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
@@ -59,8 +78,6 @@ public class UserDAO {
 					rs.close();
 				if (pstmt != null)
 					pstmt.close();
-				if (con != null)
-					con.close();
 			} catch (SQLException e) {
 				// TODO: handle exception
 				e.printStackTrace();
@@ -71,35 +88,27 @@ public class UserDAO {
 	}
 
 	// 데이터 입력하기
-	public void insert(long database_id, int type, String ip, int port, String database, String username,
+	public void insert(Connection con, long database_id, int type, String ip, int port, String database, String username,
 			String password) {
 
-		Connection con = null;
 		PreparedStatement pstmt = null;
 
 		try {
-			con = jt.getDataSource().getConnection();
 			// postgresql
-//			String sql = "insert into sw_database values (nextval('database_id_seq'), ?, ?, ?, ?, ?, ?)";
+			String sql = "insert into sw_database values (?, ?, ?, ?, ?, ?, ?)";
 			// mariadb
-			String sql = "insert into sw_database values (nextval(database_id_seq), ?, ?, ?, ?, ?, ?)";
+//			String sql = "insert into sw_database values (nextval(database_id_seq), ?, ?, ?, ?, ?, ?)";
 			pstmt = con.prepareStatement(sql);
-//			pstmt.setLong(1, database_id);
-//			pstmt.setInt(2, type);
-//			pstmt.setString(3, ip);
-//			pstmt.setInt(4, port);
-//			pstmt.setString(5, database);
-//			pstmt.setString(6, username);
-//			pstmt.setString(7, password);
-			pstmt.setInt(1, type);
-			pstmt.setString(2, ip);
-			pstmt.setInt(3, port);
-			pstmt.setString(4, database);
-			pstmt.setString(5, username);
-			pstmt.setString(6, password);
+			pstmt.setLong(1, database_id);
+			pstmt.setInt(2, type);
+			pstmt.setString(3, ip);
+			pstmt.setInt(4, port);
+			pstmt.setString(5, database);
+			pstmt.setString(6, username);
+			pstmt.setString(7, password);
 
 			// insert, delete, update 은 executeUpdate()
-			int n = pstmt.executeUpdate();
+			pstmt.executeUpdate();
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -107,8 +116,6 @@ public class UserDAO {
 			try {
 				if (pstmt != null)
 					pstmt.close();
-				if (con != null)
-					con.close();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -117,13 +124,11 @@ public class UserDAO {
 	}// end insert
 
 	// 데이터 수정하기
-	public void update(long database_id, int type, String ip, int port, String database, String username,
+	public void update(Connection con, long database_id, int type, String ip, int port, String database, String username,
 			String password) {
-		Connection con = null;
 		PreparedStatement pstmt = null;
 
 		try {
-			con = jt.getDataSource().getConnection();
 			String sql = "update sw_database set type = ?, ip = ?, port = ?, username = ?, password = ? where database_id = ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setLong(6, database_id);
@@ -141,8 +146,6 @@ public class UserDAO {
 			try {
 				if (pstmt != null)
 					pstmt.close();
-				if (con != null)
-					con.close();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -152,13 +155,10 @@ public class UserDAO {
 	} // update 끝
 
 	// 삭제하기
-	public void delete(long database_id) {
-		Connection con = null;
+	public void delete(Connection con, long database_id) {
 		PreparedStatement pstmt = null;
 
 		try {
-			con = jt.getDataSource().getConnection();
-
 			String sql = "delete from sw_database where database_id = ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setLong(1, database_id);
@@ -166,19 +166,24 @@ public class UserDAO {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 	}
 
 	// 하나만 조회하기
-	public User findOne(long database_id) {
+	public User findOne(Connection con, long database_id) {
 		User user = new User();
-		// 필요한 자원
-		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
 		try {
-			con = jt.getDataSource().getConnection();
 			// 접속 시간
 			String sql = "select * from sw_database where database_id = ?";
 			pstmt = con.prepareStatement(sql);
@@ -203,8 +208,6 @@ public class UserDAO {
 					rs.close();
 				if (pstmt != null)
 					pstmt.close();
-				if (con != null)
-					con.close();
 			} catch (SQLException e) {
 				// TODO: handle exception
 				e.printStackTrace();
