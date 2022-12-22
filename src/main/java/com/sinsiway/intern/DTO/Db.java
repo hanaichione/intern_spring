@@ -1,4 +1,4 @@
-package com.sinsiway.intern.DTO;
+package com.sinsiway.intern.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,7 +7,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class User {
+public class Db {
 	private long database_id;
 	private int type;
 	private String ip;
@@ -16,12 +16,12 @@ public class User {
 	private String username;
 	private String password;
 
-	public User() {
+	public Db() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	
-	public User(long database_id, int type, String ip, int port, String database, String username, String password) {
+	public Db(long database_id, int type, String ip, int port, String database, String username, String password) {
 		super();
 		this.database_id = database_id;
 		this.type = type;

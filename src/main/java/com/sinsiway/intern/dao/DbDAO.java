@@ -11,47 +11,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import com.sinsiway.intern.DTO.User;
+import com.sinsiway.intern.dto.Db;
 
 @Component
-public class UserDAO {
+public class DbDAO {
 	@Autowired
 	JdbcTemplate jt;
 	
-	public Connection connect() {
-		Connection con = null;
-		try {
-			System.out.println("dao에서 성공");
-			con = jt.getDataSource().getConnection();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return con;
-	}
-	
-	public String close(Connection con) {
-		if (con!=null)
-			try {
-				con.close();
-				return "접속 종료";
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		return "접속 종료 실패";
-	}
+	Connection con = null;
 	
 	// 모두 조회하기
-	public List<User> findAll(Connection con) {
+	public List<Db> findAll() {
 		// 받아온 레코드들을 담을 리스트
-		List<User> list = new ArrayList<User>();
-
+		List<Db> list = new ArrayList<Db>();
+		
 		// 필요한 자원
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
 		try {
+			con = jt.getDataSource().getConnection();
 			String sql = "select * from sw_database";
 			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
@@ -65,8 +44,8 @@ public class UserDAO {
 				String database = rs.getString("database");
 				String username = rs.getString("username");
 				String password = rs.getString("password");
-				User user = new User(database_id, type, ip, port, database, username, password);
-				list.add(user);
+				Db db = new Db(database_id, type, ip, port, database, username, password);
+				list.add(db);
 			}
 
 		} catch (Exception e) {
@@ -88,24 +67,23 @@ public class UserDAO {
 	}
 
 	// 데이터 입력하기
-	public void insert(Connection con, long database_id, int type, String ip, int port, String database, String username,
+	public void insert(long database_id, int type, String ip, int port, String database, String username,
 			String password) {
 
 		PreparedStatement pstmt = null;
 
 		try {
-			// postgresql
+			con = jt.getDataSource().getConnection();
 			String sql = "insert into sw_database values (?, ?, ?, ?, ?, ?, ?)";
-			// mariadb
-//			String sql = "insert into sw_database values (nextval(database_id_seq), ?, ?, ?, ?, ?, ?)";
+			
 			pstmt = con.prepareStatement(sql);
 			pstmt.setLong(1, database_id);
-			pstmt.setInt(2, type);
+			pstmt.setInt(6, type);
 			pstmt.setString(3, ip);
-			pstmt.setInt(4, port);
-			pstmt.setString(5, database);
-			pstmt.setString(6, username);
-			pstmt.setString(7, password);
+			pstmt.setInt(5, port);
+			pstmt.setString(2, database);
+			pstmt.setString(7, username);
+			pstmt.setString(4, password);
 
 			// insert, delete, update 은 executeUpdate()
 			pstmt.executeUpdate();
@@ -124,11 +102,12 @@ public class UserDAO {
 	}// end insert
 
 	// 데이터 수정하기
-	public void update(Connection con, long database_id, int type, String ip, int port, String database, String username,
+	public void update(long database_id, int type, String ip, int port, String database, String username,
 			String password) {
 		PreparedStatement pstmt = null;
 
 		try {
+			con = jt.getDataSource().getConnection();
 			String sql = "update sw_database set type = ?, ip = ?, port = ?, username = ?, password = ? where database_id = ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setLong(6, database_id);
@@ -155,10 +134,11 @@ public class UserDAO {
 	} // update 끝
 
 	// 삭제하기
-	public void delete(Connection con, long database_id) {
+	public void delete(long database_id) {
 		PreparedStatement pstmt = null;
 
 		try {
+			con = jt.getDataSource().getConnection();
 			String sql = "delete from sw_database where database_id = ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setLong(1, database_id);
@@ -178,13 +158,13 @@ public class UserDAO {
 	}
 
 	// 하나만 조회하기
-	public User findOne(Connection con, long database_id) {
-		User user = new User();
+	public Db findOne(long database_id) {
+		Db user = new Db();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
 		try {
-			// 접속 시간
+			con = jt.getDataSource().getConnection();
 			String sql = "select * from sw_database where database_id = ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setLong(1, database_id);
@@ -197,7 +177,7 @@ public class UserDAO {
 			String database = rs.getString("database");
 			String username = rs.getString("username");
 			String password = rs.getString("password");
-			user = new User(database_id, type, ip, port, database, username, password);
+			user = new Db(database_id, type, ip, port, database, username, password);
 
 		} catch (Exception e) {
 			// TODO: handle exception

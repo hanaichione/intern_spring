@@ -1,6 +1,5 @@
 package com.sinsiway.intern.controller;
 
-import java.sql.Connection;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -14,7 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sinsiway.intern.DTO.Reject;
+import com.sinsiway.intern.dto.Reject;
 import com.sinsiway.intern.service.RejectService;
 
 @RestController
@@ -22,36 +21,32 @@ public class RejectController {
 	@Autowired
 	RejectService service;
 	
-	// 404 not found 오류 발생하여 수정 필요
-	@PostMapping("/rejInsert")
-	public int insertReject(@RequestBody Reject reject, HttpSession session) {
-		Connection con = (Connection) session.getAttribute("con");
-		return service.insertReject(con, reject);
+	@PostMapping("/reject")
+	public String insertReject(@RequestBody Reject reject, HttpSession session) {
+		service.insertReject(reject);
+		return "입력완료";
 	}
 	
-	@PutMapping("/rejectUpdate/{database_id}")
-	public int updateReject(@RequestBody Reject reject, @PathVariable("database_id") Long database_id, HttpSession session) {
-		Connection con = (Connection) session.getAttribute("con");
-		reject.setDatabase_id(database_id);
-		return service.updateReject(con, reject);
+	@PutMapping("/reject")
+	public Reject updateReject(@RequestBody Reject reject) {
+		service.updateReject(reject);
+		return service.rejectFindOne(reject.getPolicy_id());
 	}
 	
-	@GetMapping("/rejectFindAll")
-	public List<Reject> rejectFindAll(HttpSession session) {
-		Connection con = (Connection) session.getAttribute("con");
-		List<Reject> reject = service.rejectFindAll(con);
+	@GetMapping("/reject")
+	public List<Reject> rejectFindAll() {
+		List<Reject> reject = service.rejectFindAll();
 		return reject;
 	}
 	
-	@GetMapping("/rejectFindOne/{database_id}")
-	public Reject rejectFindOne(HttpSession session, @PathVariable("database_id") Long database_id) {
-		Connection con = (Connection) session.getAttribute("con");
-		return service.rejectFindOne(con, database_id);
+	@GetMapping("/reject/{policy_id}")
+	public Reject rejectFindOne(@PathVariable("policy_id") Long policy_id) {
+		return service.rejectFindOne(policy_id);
 	}
 	
-	@DeleteMapping("/deleteReject/{database_id}")
-	public int deleteReject(@PathVariable("database_id") Long database_id, HttpSession session) {
-		Connection con = (Connection) session.getAttribute("con");
-		return service.deleteReject(con, database_id);
+	@DeleteMapping("/reject/{policy_id}")
+	public List<Reject> deleteReject(@PathVariable("policy_id") Long policy_id) {
+		service.deleteReject(policy_id);
+		return service.rejectFindAll();
 	}
 }

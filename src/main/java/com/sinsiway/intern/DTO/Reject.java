@@ -1,4 +1,4 @@
-package com.sinsiway.intern.DTO;
+package com.sinsiway.intern.dto;
 
 import lombok.Getter;
 import lombok.Setter;
