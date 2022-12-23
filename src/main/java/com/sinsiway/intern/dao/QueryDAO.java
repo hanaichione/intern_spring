@@ -16,11 +16,12 @@ import com.sinsiway.intern.dto.Emp;
 @Component
 public class QueryDAO {
 
-	public List<Emp> selectE(Connection con, String sql, String type) {
+	public Object selectE(Connection con, String sql, String type) {
+//		public List<Emp> selectE(Connection con, String sql, String type) {
 		// TODO Auto-generated method stub
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		List<Emp> list = new ArrayList<Emp>();
+		Object resp = null;
 
 		try {
 			pstmt = con.prepareStatement(sql);
@@ -28,7 +29,9 @@ public class QueryDAO {
 			if (type.equals("select")) {
 				rs = pstmt.executeQuery();
 
+				resp = new ArrayList<Emp>();
 				// 데이터 받아서 넣기
+				// 이 부분의 확장성 -> 모든 테이블 레코드를 받아올 수 있도록
 				while (rs.next()) {
 					int empno = rs.getInt("empno");
 					String ename = rs.getString("ename");
@@ -39,16 +42,27 @@ public class QueryDAO {
 					double comm = rs.getDouble("comm");
 					int deptno = rs.getInt("deptno");
 					Emp emp = new Emp(empno, ename, job, mgr, hiredate, sal, comm, deptno);
-					list.add(emp);
+					((ArrayList<Emp>) resp).add(emp);
 				}
 			}
-			// insert, update, put일 때
+			// insert, update, delete일 때
 			else {
-				pstmt.executeUpdate();
+				int n = pstmt.executeUpdate();
+				if (n == 1 && type.equals("insert")) {
+					resp = "등록 성공";
+					System.out.println("insert 성공");
+				} else if (n == 1 && type.equals("update")) {
+					System.out.println("update 성공");
+					resp = "수정 성공";
+				} else if (n == 1 && type.equals("delete")) {
+					System.out.println("delete 성공");
+					resp = "삭제 성공";
+				}
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			resp = e.getMessage();
 		} finally {
 			try {
 				if (pstmt != null)
@@ -60,7 +74,7 @@ public class QueryDAO {
 				e.printStackTrace();
 			}
 		}
-		return list;
+		return resp;
 	}
 	
 	public List<Dept> selectD(Connection con, String sql, String type) {
@@ -87,6 +101,7 @@ public class QueryDAO {
 			// insert, update, put일 때
 			else {
 				pstmt.executeUpdate();
+				// 수행 메시지 위해서 전부 구별할 필요 有
 			}
 
 		} catch (Exception e) {

@@ -1,5 +1,7 @@
 package com.sinsiway.intern.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,5 +23,15 @@ public class LogService {
 	public void executeLog(ExecuteLog elog) {
 		// TODO Auto-generated method stub
 		dao.executeLog(elog);
+	}
+
+	public List<ConnectionLog> cfindAll() {
+		// TODO Auto-generated method stub
+		return dao.cfindAll();
+	}
+
+	public List<ExecuteLog> efindAll() {
+		// TODO Auto-generated method stub
+		return dao.efindAll();
 	}
 }

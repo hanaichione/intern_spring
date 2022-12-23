@@ -9,17 +9,15 @@ import lombok.ToString;
 @ToString
 public class Query {
 	int token;
-	String type;
 	String sql;
 	
 	public Query() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Query(int token, String type, String sql) {
+	public Query(int token, String sql) {
 		super();
 		this.token = token;
-		this.type = type;
 		this.sql = sql;
 	}
 }

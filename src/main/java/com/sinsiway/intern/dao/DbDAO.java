@@ -53,6 +53,8 @@ public class DbDAO {
 			e.printStackTrace();
 		} finally {
 			try {
+				if (con != null)
+					con.close();
 				if (rs != null)
 					rs.close();
 				if (pstmt != null)
@@ -92,6 +94,8 @@ public class DbDAO {
 			e.printStackTrace();
 		} finally {
 			try {
+				if (con != null)
+					con.close();
 				if (pstmt != null)
 					pstmt.close();
 			} catch (SQLException e) {
@@ -123,6 +127,8 @@ public class DbDAO {
 			e.printStackTrace();
 		} finally {
 			try {
+				if (con != null)
+					con.close();
 				if (pstmt != null)
 					pstmt.close();
 			} catch (SQLException e) {
@@ -149,7 +155,10 @@ public class DbDAO {
 		} finally {
 			if (pstmt != null)
 				try {
-					pstmt.close();
+					if (con != null)
+						con.close();
+					if (pstmt != null)
+						pstmt.close();
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -184,6 +193,8 @@ public class DbDAO {
 			e.printStackTrace();
 		} finally {
 			try {
+				if (con != null)
+					con.close();
 				if (rs != null)
 					rs.close();
 				if (pstmt != null)

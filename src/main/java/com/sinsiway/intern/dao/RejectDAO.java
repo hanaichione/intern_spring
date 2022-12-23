@@ -177,4 +177,40 @@ public class RejectDAO {
 		return n;
 	}
 
+	public Object rejectFindOne(String ip) {
+		// TODO Auto-generated method stub
+		Reject reject = new Reject();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			con = jt.getDataSource().getConnection();
+			// 접속 시간
+			String sql = "select * from sw_database_reject where client_ip = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, ip);;
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			long database_id = rs.getLong("database_id");
+			long policy_id = rs.getLong("policy_id");
+			reject = new Reject(policy_id, database_id, ip);
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+			} catch (SQLException e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+		}
+		return reject;
+	}
+
 }

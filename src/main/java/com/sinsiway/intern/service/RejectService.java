@@ -38,6 +38,11 @@ public class RejectService {
 		// TODO Auto-generated method stub
 		return dao.deleteReject(policy_id);
 	}
+
+	public Object rejectFindOne(String ip) {
+		// TODO Auto-generated method stub
+		return dao.rejectFindOne(ip);
+	}
 	
 	
 

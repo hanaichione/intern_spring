@@ -16,7 +16,7 @@ public class QueryService {
 	@Autowired
 	QueryDAO dao;
 	
-	public List<Emp> selectE(Connection con, String sql, String type) {
+	public Object selectE(Connection con, String sql, String type) {
 		// TODO Auto-generated method stub
 		return dao.selectE(con, sql, type);
 	}
