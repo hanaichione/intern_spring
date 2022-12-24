@@ -130,7 +130,48 @@ public class LogDAO {
 
 	public List<ExecuteLog> efindAll() {
 		// TODO Auto-generated method stub
-		return null;
+				List<ExecuteLog> list = new ArrayList<ExecuteLog>();
+				PreparedStatement pstmt = null;
+				ResultSet rs = null;
+
+				try {
+					con = jt.getDataSource().getConnection();
+					String sql = "select * from sw_execute_log";
+					pstmt = con.prepareStatement(sql);
+					rs = pstmt.executeQuery();
+
+					// 데이터 받아서 넣기
+					while (rs.next()) {
+						long id = rs.getLong("id");
+						long database_id = rs.getLong("database_id");			
+						String client_ip = rs.getString("client_ip");
+						Timestamp exec_date = rs.getTimestamp("exec_date");
+						String sql_text = rs.getString("sql_text");
+						String sql_type = rs.getString("sql_type");
+						boolean result = rs.getBoolean("result");
+						String message = rs.getString("message");
+						ExecuteLog elog = new ExecuteLog(id, database_id, client_ip, exec_date, sql_text, sql_type, result, message);
+						list.add(elog);
+					}
+				} catch (Exception e) {
+					// TODO: handle exception
+				} finally {
+					try {
+						if (con != null)
+							con.close();
+						if (rs != null)
+							rs.close();
+						if (pstmt != null)
+							pstmt.close();
+					} catch (SQLException e) {
+						// TODO: handle exception
+						e.printStackTrace();
+					}
+				}
+
+				return list;
 	}
+	
+	
 
 }
