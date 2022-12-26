@@ -10,7 +10,7 @@ import com.sinsiway.intern.dto.ConnectionLog;
 import com.sinsiway.intern.dto.Db;
 
 @Component
-public class ConnectDAO {
+public class ConnectDao {
 	
 	public Connection connect(Db db) {
 		Connection con = null;

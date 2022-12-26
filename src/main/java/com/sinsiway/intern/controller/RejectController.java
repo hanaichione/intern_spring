@@ -1,6 +1,7 @@
 package com.sinsiway.intern.controller;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -21,32 +22,62 @@ public class RejectController {
 	@Autowired
 	RejectService service;
 	
+	
 	@PostMapping("/reject")
-	public String insertReject(@RequestBody Reject reject, HttpSession session) {
-		service.insertReject(reject);
-		return "입력완료";
+	public Object insertReject(@RequestBody Reject reject, HttpSession session) {
+		Map<String, Object> response = new HashMap<String, Object>();
+		String result = "";
+		int n =	service.insertReject(reject);
+		if (n == 1) {
+			result = "입력 완료";
+		} else {
+			result = "입력 실패";	
+		}
+		response.put("result", result);
+		return response;
 	}
 	
 	@PutMapping("/reject")
-	public Reject updateReject(@RequestBody Reject reject) {
-		service.updateReject(reject);
-		return service.rejectFindOne(reject.getPolicy_id());
+	public Object updateReject(@RequestBody Reject reject) {
+		Map<String, Object> response = new HashMap<String, Object>();
+		String result = "";
+		int n =	service.updateReject(reject);
+		if (n == 1) {
+			result = "수정 완료";
+		} else {
+			result = "수정 실패";	
+		}
+		response.put("result", result);
+		return response;
 	}
 	
 	@GetMapping("/reject")
-	public List<Reject> rejectFindAll() {
-		List<Reject> reject = service.rejectFindAll();
-		return reject;
+	public Object rejectFindAll() {
+		Map<String, Object> response = new HashMap<String, Object>();
+		Object result = service.rejectFindAll();
+		response.put("result", result);
+		return response;
 	}
 	
 	@GetMapping("/reject/{policy_id}")
-	public Reject rejectFindOne(@PathVariable("policy_id") Long policy_id) {
-		return service.rejectFindOne(policy_id);
+	public Object rejectFindOne(@PathVariable("policy_id") Long policy_id) {
+		Map<String, Object> response = new HashMap<String, Object>();
+		Object result = service.rejectFindOne(policy_id);
+		response.put("result", result);
+		return response;
 	}
 	
 	@DeleteMapping("/reject/{policy_id}")
-	public List<Reject> deleteReject(@PathVariable("policy_id") Long policy_id) {
-		service.deleteReject(policy_id);
-		return service.rejectFindAll();
+	public Object deleteReject(@PathVariable("policy_id") Long policy_id) {
+		Map<String, Object> response = new HashMap<String, Object>();
+		String result = "";
+		int n =	service.deleteReject(policy_id);
+		if (n == 1) {
+			result = "삭제 완료";
+		} else {
+			result = "삭제 실패";	
+		}
+		response.put("result", result);
+		return response;
 	}
 }

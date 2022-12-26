@@ -5,7 +5,7 @@ import java.sql.Connection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.sinsiway.intern.dao.ConnectDAO;
+import com.sinsiway.intern.dao.ConnectDao;
 import com.sinsiway.intern.dto.ConnectionLog;
 import com.sinsiway.intern.dto.Db;
 
@@ -13,7 +13,7 @@ import com.sinsiway.intern.dto.Db;
 public class ConnectService {
 	
 	@Autowired
-	ConnectDAO dao;
+	ConnectDao dao;
 	
 	public Connection connect(Db db) {
 		// TODO Auto-generated method stub

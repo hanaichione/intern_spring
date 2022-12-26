@@ -11,15 +11,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import com.sinsiway.intern.dto.Emp;
 import com.sinsiway.intern.dto.Reject;
 
 @Component
-public class RejectDAO {
+public class RejectDao {
 	@Autowired
 	JdbcTemplate jt;
-	
+
 	Connection con = null;
-	
+
 	public int insertReject(Reject reject) {
 		// TODO Auto-generated method stub
 		PreparedStatement pstmt = null;
@@ -75,48 +76,49 @@ public class RejectDAO {
 		return n;
 	}
 
-	public List<Reject> rejectFindAll() {
+	public Object rejectFindAll() {
 		// 받아온 레코드들을 담을 리스트
-				List<Reject> list = new ArrayList<Reject>();
+		List<Reject> list = new ArrayList<Reject>();
 
-				// 필요한 자원
-				PreparedStatement pstmt = null;
-				ResultSet rs = null;
+		// 필요한 자원
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 
-				try {
-					con = jt.getDataSource().getConnection();
-					String sql = "select * from sw_database_reject";
-					pstmt = con.prepareStatement(sql);
-					rs = pstmt.executeQuery();
+		try {
+			con = jt.getDataSource().getConnection();
+			String sql = "select * from sw_database_reject";
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
 
-					// 데이터 받아서 넣기
-					while (rs.next()) {
-						long database_id = rs.getLong("database_id");
-						long policy_id = rs.getLong("policy_id");
-						String client_ip = rs.getString("client_ip");
-						Reject reject = new Reject(policy_id, database_id, client_ip);
-						list.add(reject);
-					}
+			// 데이터 받아서 넣기
+			while (rs.next()) {
+				long database_id = rs.getLong("database_id");
+				long policy_id = rs.getLong("policy_id");
+				String client_ip = rs.getString("client_ip");
+				Reject reject = new Reject(policy_id, database_id, client_ip);
+				list.add(reject);
+			}
 
-				} catch (Exception e) {
-					// TODO: handle exception
-					e.printStackTrace();
-				} finally {
-					try {
-						if (rs != null)
-							rs.close();
-						if (pstmt != null)
-							pstmt.close();
-					} catch (SQLException e) {
-						// TODO: handle exception
-						e.printStackTrace();
-					}
-				}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return "sw_database_reject 테이블 조회 실패";
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+			} catch (SQLException e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+		}
 
-				return list;
+		return list;
 	}
 
-	public Reject rejectFindOne(Long policy_id) {
+	public Object rejectFindOne(Long policy_id) {
 		// TODO Auto-generated method stub
 		Reject reject = new Reject();
 		PreparedStatement pstmt = null;
@@ -129,7 +131,7 @@ public class RejectDAO {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setLong(1, policy_id);
 			rs = pstmt.executeQuery();
-			
+
 			rs.next();
 			long database_id = rs.getLong("database_id");
 			String client_ip = rs.getString("client_ip");
@@ -138,6 +140,7 @@ public class RejectDAO {
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
+			return "sw_database_reject 테이블 조회 실패";
 		} finally {
 			try {
 				if (rs != null)
@@ -177,28 +180,31 @@ public class RejectDAO {
 		return n;
 	}
 
-	public Object rejectFindOne(String ip) {
+	public Object rejectFindOne(long database_id) {
 		// TODO Auto-generated method stub
-		Reject reject = new Reject();
+		List<Reject> reject = new ArrayList<Reject>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
 		try {
 			con = jt.getDataSource().getConnection();
 			// 접속 시간
-			String sql = "select * from sw_database_reject where client_ip = ?";
+			String sql = "select * from sw_database_reject where database_id = ?";
 			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, ip);;
+			pstmt.setLong(1, database_id);
 			rs = pstmt.executeQuery();
-			
-			rs.next();
-			long database_id = rs.getLong("database_id");
-			long policy_id = rs.getLong("policy_id");
-			reject = new Reject(policy_id, database_id, ip);
+
+			while (rs.next()) {
+				long policy_id = rs.getLong("policy_id");
+				String client_ip = rs.getString("client_ip");
+				Reject r = new Reject(policy_id, database_id, client_ip);
+				reject.add(r);
+			}
 
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
+			return "sw_database_reject 테이블 조회 실패";
 		} finally {
 			try {
 				if (rs != null)
@@ -213,4 +219,39 @@ public class RejectDAO {
 		return reject;
 	}
 
+	public Object rejectFindOne(String ip) {
+		// TODO Auto-generated method stub
+		Reject reject = new Reject();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			con = jt.getDataSource().getConnection();
+			// 접속 시간
+			String sql = "select * from sw_database_reject where client_ip = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, ip);
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			long policy_id = rs.getLong("policy_id");
+			long database_id = rs.getLong("database_id");
+			reject = new Reject(policy_id, database_id, ip);
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			return null;
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+			} catch (SQLException e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+		}
+		return reject;
+	}
 }

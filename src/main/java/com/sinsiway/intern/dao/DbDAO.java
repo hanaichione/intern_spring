@@ -14,14 +14,14 @@ import org.springframework.stereotype.Component;
 import com.sinsiway.intern.dto.Db;
 
 @Component
-public class DbDAO {
+public class DbDao {
 	@Autowired
 	JdbcTemplate jt;
 	
 	Connection con = null;
 	
 	// 모두 조회하기
-	public List<Db> findAll() {
+	public Object findAll() {
 		// 받아온 레코드들을 담을 리스트
 		List<Db> list = new ArrayList<Db>();
 		
@@ -51,6 +51,7 @@ public class DbDAO {
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
+			return "조회 실패" + e.getMessage();
 		} finally {
 			try {
 				if (con != null)
@@ -69,7 +70,7 @@ public class DbDAO {
 	}
 
 	// 데이터 입력하기
-	public void insert(long database_id, int type, String ip, int port, String database, String username,
+	public String insert(long database_id, int type, String ip, int port, String database, String username,
 			String password) {
 
 		PreparedStatement pstmt = null;
@@ -92,6 +93,7 @@ public class DbDAO {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "입력 실패"+e.getMessage();
 		} finally {
 			try {
 				if (con != null)
@@ -103,13 +105,14 @@ public class DbDAO {
 				e.printStackTrace();
 			}
 		}
+		return "입력 성공";
 	}// end insert
 
 	// 데이터 수정하기
-	public void update(long database_id, int type, String ip, int port, String database, String username,
+	public String update(long database_id, int type, String ip, int port, String database, String username,
 			String password) {
 		PreparedStatement pstmt = null;
-
+		
 		try {
 			con = jt.getDataSource().getConnection();
 			String sql = "update sw_database set type = ?, ip = ?, port = ?, username = ?, password = ? where database_id = ?";
@@ -121,10 +124,11 @@ public class DbDAO {
 			pstmt.setString(4, username);
 			pstmt.setString(5, password);
 
-			int n = pstmt.executeUpdate();
+			pstmt.executeUpdate();
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "수정 실패"+e.getMessage();
 		} finally {
 			try {
 				if (con != null)
@@ -136,11 +140,11 @@ public class DbDAO {
 				e.printStackTrace();
 			}
 		}
-
+		return "수정 성공";
 	} // update 끝
 
 	// 삭제하기
-	public void delete(long database_id) {
+	public String delete(long database_id) {
 		PreparedStatement pstmt = null;
 
 		try {
@@ -152,6 +156,7 @@ public class DbDAO {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return "삭제 실패" + e.getMessage();
 		} finally {
 			if (pstmt != null)
 				try {
@@ -164,10 +169,11 @@ public class DbDAO {
 					e.printStackTrace();
 				}
 		}
+		return "삭제 성공";
 	}
 
 	// 하나만 조회하기
-	public Db findOne(long database_id) {
+	public Object findOne(long database_id) {
 		Db user = new Db();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -191,6 +197,7 @@ public class DbDAO {
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
+			return "조회 실패"+e.getMessage();
 		} finally {
 			try {
 				if (con != null)

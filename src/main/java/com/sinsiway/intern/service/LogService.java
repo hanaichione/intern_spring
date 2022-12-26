@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.sinsiway.intern.dao.LogDAO;
+import com.sinsiway.intern.dao.LogDao;
 import com.sinsiway.intern.dto.ConnectionLog;
 import com.sinsiway.intern.dto.ExecuteLog;
 
@@ -13,25 +13,35 @@ import com.sinsiway.intern.dto.ExecuteLog;
 public class LogService {
 	
 	@Autowired
-	LogDAO dao;
+	LogDao dao;
 	
-	public void connectLog(ConnectionLog clog) {
+	public String connectLog(ConnectionLog clog) {
 		// TODO Auto-generated method stub
-		dao.connectLog(clog);
+		return dao.connectLog(clog);
 	}
 
-	public void executeLog(ExecuteLog elog) {
+	public String executeLog(ExecuteLog elog) {
 		// TODO Auto-generated method stub
-		dao.executeLog(elog);
+		return dao.executeLog(elog);
 	}
 
-	public List<ConnectionLog> cfindAll() {
+	public Object cfindAll() {
 		// TODO Auto-generated method stub
 		return dao.cfindAll();
 	}
 
-	public List<ExecuteLog> efindAll() {
+	public Object efindAll() {
 		// TODO Auto-generated method stub
 		return dao.efindAll();
+	}
+
+	public Object cfindById(long database_id) {
+		// TODO Auto-generated method stub
+		return dao.cfindById(database_id);
+	}
+
+	public Object efindById(long database_id) {
+		// TODO Auto-generated method stub
+		return dao.efindById(database_id);
 	}
 }

@@ -17,34 +17,24 @@ public class LogController {
 	LogService logService;
 	
 	@GetMapping("/clog")
-	public List<ConnectionLog> cfindAll(){
+	public Object cfindAll(){
 		return logService.cfindAll();
 	}
 	
 	@GetMapping("/elog")
-	public List<ExecuteLog> efindAll(){
+	public Object efindAll(){
 		return logService.efindAll();
 	}
 	
 	@GetMapping("/clog/{database_id}")
-	public List<ConnectionLog> cfindWhere(@PathVariable long database_id){
-		List<ConnectionLog> list = logService.cfindAll();
-		for (int i = 0; i < list.size(); i++) {
-			if (list.get(i).getDatabase_id() == database_id) {
-				list.remove(i);
-			}
-		}
-		return list;
+	public Object cfindWhere(@PathVariable long database_id){
+		Object result = logService.cfindById(database_id);
+		return result;
 	}
 	
 	@GetMapping("/elog/{database_id}")
-	public List<ExecuteLog> efindWhere(@PathVariable long database_id){
-		List<ExecuteLog> list = logService.efindAll();
-		for (int i = 0; i < list.size(); i++) {
-			if (list.get(i).getDatabase_id() == database_id) {
-				list.remove(i);
-			}
-		}
-		return list;
+	public Object efindWhere(@PathVariable long database_id){
+		Object result = logService.efindById(database_id);
+		return result;
 	}
 }
