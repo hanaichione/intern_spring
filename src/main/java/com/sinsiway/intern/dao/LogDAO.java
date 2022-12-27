@@ -43,9 +43,11 @@ public class LogDao {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "수행 로그 입력 실패" + e.getMessage();
+			return "접속 로그 입력 실패" + e.getMessage();
 		} finally {
 			try {
+				if (con != null)
+					con.close();
 				if (pstmt != null)
 					pstmt.close();
 			} catch (SQLException e) {
@@ -53,7 +55,7 @@ public class LogDao {
 				e.printStackTrace();
 			}
 		}
-		return "수행 로그 입력 성공";
+		return "접속 로그 입력 성공";
 	}
 
 	public String executeLog(ExecuteLog elog) {
@@ -81,6 +83,8 @@ public class LogDao {
 			return "수행 로그 입력 실패" + e.getMessage();
 		} finally {
 			try {
+				if (con != null)
+					con.close();
 				if (pstmt != null)
 					pstmt.close();
 			} catch (SQLException e) {

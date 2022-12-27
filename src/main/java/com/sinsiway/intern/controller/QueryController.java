@@ -31,7 +31,7 @@ public class QueryController {
 	@Autowired
 	LogService logSerivce;
 
-	@PostMapping("/query")
+	@PostMapping("/querys")
 	public Object select(@RequestBody Query query, HttpSession session, HttpServletRequest request) {
 		Connection con = (Connection) session.getAttribute("token" + query.getToken() + "con");
 		String type = query.getSql().split(" ")[0];

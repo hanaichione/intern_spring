@@ -39,6 +39,8 @@ public class RejectDao {
 			e.printStackTrace();
 		} finally {
 			try {
+				if (con != null)
+					con.close();
 				if (pstmt != null)
 					pstmt.close();
 			} catch (SQLException e) {
@@ -66,6 +68,8 @@ public class RejectDao {
 			e.printStackTrace();
 		} finally {
 			try {
+				if (con != null)
+					con.close();
 				if (pstmt != null)
 					pstmt.close();
 			} catch (SQLException e) {
@@ -105,6 +109,8 @@ public class RejectDao {
 			return "sw_database_reject 테이블 조회 실패";
 		} finally {
 			try {
+				if (con != null)
+					con.close();
 				if (rs != null)
 					rs.close();
 				if (pstmt != null)
@@ -143,6 +149,8 @@ public class RejectDao {
 			return "sw_database_reject 테이블 조회 실패";
 		} finally {
 			try {
+				if(con != null)
+					con.close();
 				if (rs != null)
 					rs.close();
 				if (pstmt != null)
@@ -169,13 +177,15 @@ public class RejectDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			if (pstmt != null)
-				try {
+			try {
+				if (con != null)
+					con.close();
+				if (pstmt != null)
 					pstmt.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
 		}
 		return n;
 	}
@@ -207,6 +217,8 @@ public class RejectDao {
 			return "sw_database_reject 테이블 조회 실패";
 		} finally {
 			try {
+				if (con != null)
+					con.close();
 				if (rs != null)
 					rs.close();
 				if (pstmt != null)
@@ -243,6 +255,46 @@ public class RejectDao {
 			return null;
 		} finally {
 			try {
+				if (con != null)
+					con.close();
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+			} catch (SQLException e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+		}
+		return reject;
+	}
+
+	public Object findDupIp(long database_id, String client_ip) {
+		// TODO Auto-generated method stub
+		Reject reject = new Reject();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			con = jt.getDataSource().getConnection();
+			// 접속 시간
+			String sql = "select * from sw_database_reject where client_ip = ? and database_id = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, client_ip);
+			pstmt.setLong(2, database_id);
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			long policy_id = rs.getLong("policy_id");
+			reject = new Reject(policy_id, database_id, client_ip);
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			return null;
+		} finally {
+			try {
+				if (con != null)
+					con.close();
 				if (rs != null)
 					rs.close();
 				if (pstmt != null)

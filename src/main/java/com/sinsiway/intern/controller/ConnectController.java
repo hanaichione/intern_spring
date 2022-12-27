@@ -13,6 +13,8 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -67,16 +69,22 @@ public class ConnectController {
 		
 		// client_ip가 sw_database_reject에 있는지 검사
 		if (rej == null) { // 없으면 : result "접속 성공"
-			// connect 시도
-			Db db = (Db) dbService.findOne(database_id); // 해당 id에 저장된 db 정보 불러오기
-			con = service.connect(db); // connection 객체 받아오기
-			// 토큰 발행
-			cnt++;
-			session.setAttribute("token" + database_id + cnt, cnt); // token21, 1
-			session.setAttribute("token" + database_id + cnt + "con", con); // token21con, con
-			session.setAttribute("token" + database_id + cnt + "dbId", database_id);
-			result = "접속 성공";
-			token_id = database_id + "" + session.getAttribute("token" + database_id + cnt);
+			try {
+				// connect 시도
+				Db db = (Db) dbService.findOne(database_id); // 해당 id에 저장된 db 정보 불러오기
+				con = service.connect(db); // connection 객체 받아오기
+				// 토큰 발행
+				cnt++;
+				session.setAttribute("token" + database_id + cnt, cnt); // token21, 1
+				session.setAttribute("token" + database_id + cnt + "con", con); // token21con, con
+				session.setAttribute("token" + database_id + cnt + "dbId", database_id);
+				result = "접속 성공";
+				token_id = database_id + "" + session.getAttribute("token" + database_id + cnt);
+			} catch (Exception e) {
+				// TODO: handle exception
+				result = (String) dbService.findOne(database_id);
+			}
+			
 		} else { // 있다면 : result "접속 실패"
 			result = "접속 제한된 ip입니다.";
 			success = false;

@@ -27,7 +27,7 @@ public class QueryDao {
 			pstmt = con.prepareStatement(sql);
 			
 			// select일 때
-			if (type.equalsIgnoreCase("select")) { // 수정, 부족한 부분 정리할 떄 참고(원인 분석, 개선 방안, 비전/어떤 계획을 갖고 있는지)
+			if (type.equalsIgnoreCase("select")) { // 수정
 				rs = pstmt.executeQuery();
 				String table = "";
 				String[] sql_word = sql.split(" ");
@@ -39,7 +39,6 @@ public class QueryDao {
 				
 				// emp 일 때
 				if (table.equalsIgnoreCase("emp")) {
-					System.out.println("query type - select, table - emp");
 					resp = new ArrayList<Emp>();
 					// 데이터 받아서 넣기
 					// 이 부분의 확장성 -> 모든 테이블 레코드를 받아올 수 있도록

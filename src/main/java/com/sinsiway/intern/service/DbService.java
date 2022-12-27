@@ -35,5 +35,10 @@ public class DbService {
 		return dbDao.delete(database_id);
 	}
 
+	public Object findDup(int type, String ip, int port, String database, String username, String password) {
+		// TODO Auto-generated method stub
+		return dbDao.findDup(type, ip, port, database, username, password);
+	}
+
 	
 }

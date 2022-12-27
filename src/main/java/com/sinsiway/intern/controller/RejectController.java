@@ -23,21 +23,32 @@ public class RejectController {
 	RejectService service;
 	
 	
-	@PostMapping("/reject")
+	@PostMapping("/rejections")
 	public Object insertReject(@RequestBody Reject reject, HttpSession session) {
 		Map<String, Object> response = new HashMap<String, Object>();
 		String result = "";
-		int n =	service.insertReject(reject);
-		if (n == 1) {
-			result = "입력 완료";
-		} else {
-			result = "입력 실패";	
+		
+		if (reject.getClient_ip().length() == 0) { // client ip 정보가 비어있을 경우
+			result = "client ip 정보는 비워둘 수 없습니다.";
+		} else {									// 이미 저장된 정보를 중복 저장하는 경우
+			Object rej = service.findDupIp(reject.getDatabase_id(), reject.getClient_ip());
+			if (rej != null) {
+				result = "해당 데이터베이스에 이미 접근 제한된 IP 입니다.";
+			} else {
+				int n =	service.insertReject(reject);
+				if (n == 1) {
+					result = "입력 완료";
+				} else {
+					result = "입력 실패";	
+				}
+			}
 		}
+		
 		response.put("result", result);
 		return response;
 	}
 	
-	@PutMapping("/reject")
+	@PutMapping("/rejections")
 	public Object updateReject(@RequestBody Reject reject) {
 		Map<String, Object> response = new HashMap<String, Object>();
 		String result = "";
@@ -51,7 +62,7 @@ public class RejectController {
 		return response;
 	}
 	
-	@GetMapping("/reject")
+	@GetMapping("/rejections")
 	public Object rejectFindAll() {
 		Map<String, Object> response = new HashMap<String, Object>();
 		Object result = service.rejectFindAll();
@@ -59,7 +70,7 @@ public class RejectController {
 		return response;
 	}
 	
-	@GetMapping("/reject/{policy_id}")
+	@GetMapping("/rejections/{policy_id}")
 	public Object rejectFindOne(@PathVariable("policy_id") Long policy_id) {
 		Map<String, Object> response = new HashMap<String, Object>();
 		Object result = service.rejectFindOne(policy_id);
@@ -67,7 +78,7 @@ public class RejectController {
 		return response;
 	}
 	
-	@DeleteMapping("/reject/{policy_id}")
+	@DeleteMapping("/rejections/{policy_id}")
 	public Object deleteReject(@PathVariable("policy_id") Long policy_id) {
 		Map<String, Object> response = new HashMap<String, Object>();
 		String result = "";

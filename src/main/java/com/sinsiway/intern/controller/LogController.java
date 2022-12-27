@@ -1,6 +1,8 @@
 package com.sinsiway.intern.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,25 +18,31 @@ public class LogController {
 	@Autowired
 	LogService logService;
 	
-	@GetMapping("/clog")
+	@GetMapping("/clogs")
 	public Object cfindAll(){
-		return logService.cfindAll();
+		Map<String, Object> response = new HashMap<String, Object>();
+		response.put("result", logService.cfindAll());
+		return response;
 	}
 	
-	@GetMapping("/elog")
+	@GetMapping("/elogs")
 	public Object efindAll(){
-		return logService.efindAll();
+		Map<String, Object> response = new HashMap<String, Object>();
+		response.put("result", logService.efindAll());
+		return response;
 	}
 	
-	@GetMapping("/clog/{database_id}")
+	@GetMapping("/clogs/{database_id}")
 	public Object cfindWhere(@PathVariable long database_id){
-		Object result = logService.cfindById(database_id);
-		return result;
+		Map<String, Object> response = new HashMap<String, Object>();
+		response.put("result", logService.cfindById(database_id));
+		return response;
 	}
 	
-	@GetMapping("/elog/{database_id}")
+	@GetMapping("/elogs/{database_id}")
 	public Object efindWhere(@PathVariable long database_id){
-		Object result = logService.efindById(database_id);
-		return result;
+		Map<String, Object> response = new HashMap<String, Object>();
+		response.put("result", logService.efindById(database_id));
+		return response;
 	}
 }

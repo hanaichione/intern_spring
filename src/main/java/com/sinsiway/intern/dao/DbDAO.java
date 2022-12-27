@@ -174,7 +174,7 @@ public class DbDao {
 
 	// 하나만 조회하기
 	public Object findOne(long database_id) {
-		Db user = new Db();
+		Db db = new Db();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
@@ -192,7 +192,7 @@ public class DbDao {
 			String database = rs.getString("database");
 			String username = rs.getString("username");
 			String password = rs.getString("password");
-			user = new Db(database_id, type, ip, port, database, username, password);
+			db = new Db(database_id, type, ip, port, database, username, password);
 
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -212,6 +212,50 @@ public class DbDao {
 			}
 		}
 
-		return user;
+		return db;
+	}
+
+	public Object findDup(int type, String ip, int port, String database, String username, String password) {
+		// TODO Auto-generated method stub
+		Db db = new Db();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			con = jt.getDataSource().getConnection();
+			String sql = "select * from sw_database where type = ? and ip = ? and port = ? and database = ? and username = ? and password = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, type);
+			pstmt.setString(2, ip);
+			pstmt.setInt(3, port);
+			pstmt.setString(4, database);
+			pstmt.setString(5, username);
+			pstmt.setString(6, password);
+			
+			
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			long database_id = rs.getLong("database_id");
+			db = new Db(database_id, type, ip, port, database, username, password);
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			return null;
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+			} catch (SQLException e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+		}
+
+		return db;
 	}
 }

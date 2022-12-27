@@ -413,3 +413,207 @@ org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
 org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
 2022-12-26 21:40:26 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 11:24:47 jdbc[6]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 11:35:25 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 11:36:33 jdbc[7]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 12:34:09 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 12:37:58 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 12:41:52 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 12:43:54 jdbc[7]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 12:45:44 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 12:47:50 jdbc[9]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 13:06:00 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "select * from sw_database_reject where client_ip = ? and [*]where database_id = ?"; expected "INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"; SQL statement:
+select * from sw_database_reject where client_ip = ? and where database_id = ? [42001-214]
+2022-12-27 13:06:02 jdbc[6]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "select * from sw_database_reject where client_ip = ? and [*]where database_id = ?"; expected "INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"; SQL statement:
+select * from sw_database_reject where client_ip = ? and where database_id = ? [42001-214]
+2022-12-27 13:07:55 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM SW_DATABASE_REJECT where client_ip = '192.168.219.106' and [*]where database_id = 1"; expected "INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"; SQL statement:
+SELECT * FROM SW_DATABASE_REJECT where client_ip = '192.168.219.106' and where database_id = 1 [42001-214]
+2022-12-27 13:09:07 jdbc[6]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 14:19:52 jdbc[8]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 16:23:54 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLDataException: Parameter "#6" is not set; SQL statement:
+select * from sw_database where type = ? and ip = ? and port = ? and database = ? and username = ? and password = ? [90012-214]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:646)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.expression.Parameter.checkSet(Parameter.java:75)
+	at org.h2.command.Prepared.checkParameters(Prepared.java:207)
+	at org.h2.command.CommandContainer.query(CommandContainer.java:250)
+	at org.h2.command.Command.executeQuery(Command.java:190)
+	at org.h2.jdbc.JdbcPreparedStatement.executeQuery(JdbcPreparedStatement.java:128)
+	at com.zaxxer.hikari.pool.ProxyPreparedStatement.executeQuery(ProxyPreparedStatement.java:52)
+	at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.executeQuery(HikariProxyPreparedStatement.java)
+	at com.sinsiway.intern.dao.DbDao.findDup(DbDao.java:234)
+	at com.sinsiway.intern.service.DbService.findDup(DbService.java:40)
+	at com.sinsiway.intern.service.DbService$$FastClassBySpringCGLIB$$7d8f8582.invoke(<generated>)
+	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:793)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:763)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:123)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:388)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:763)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:708)
+	at com.sinsiway.intern.service.DbService$$EnhancerBySpringCGLIB$$cd2369b.findDup(<generated>)
+	at com.sinsiway.intern.controller.DbController.insert(DbController.java:32)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:205)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:150)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:117)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:895)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:808)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1071)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:964)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:909)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:696)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:779)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:227)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:177)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:97)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:135)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:78)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:360)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:399)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:891)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1784)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Unknown Source)
+2022-12-27 16:26:15 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 16:29:21 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 16:33:05 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 16:46:30 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 16:47:28 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 16:49:48 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 16:50:17 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 16:51:19 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 18:06:22 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 18:07:01 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 18:07:53 jdbc[10]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 18:11:12 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 18:11:32 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 18:12:37 jdbc[10]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 18:26:09 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 18:26:34 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 18:27:05 jdbc[8]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 18:29:22 jdbc[12]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 18:31:02 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 18:31:03 jdbc[7]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 18:32:18 jdbc[11]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 18:38:55 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 18:39:37 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 18:40:01 jdbc[8]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 18:42:57 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 18:44:00 jdbc[8]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 18:46:18 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 18:46:46 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 18:47:29 jdbc[8]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 19:03:15 jdbc[8]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 19:08:00 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 19:08:21 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 19:08:58 jdbc[10]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 19:10:12 jdbc[12]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 19:11:22 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 19:11:47 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 19:12:26 jdbc[7]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 19:13:29 jdbc[8]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 19:15:05 jdbc[12]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 19:26:37 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 19:26:54 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 19:27:18 jdbc[9]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 19:27:25 jdbc[10]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 19:36:17 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 19:36:27 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 19:36:41 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]
+2022-12-27 19:36:46 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-214]

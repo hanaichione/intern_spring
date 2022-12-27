@@ -49,4 +49,9 @@ public class RejectService {
 		return dao.deleteReject(policy_id);
 	}
 
+	public Object findDupIp(long database_id, String client_ip) {
+		// TODO Auto-generated method stub
+		return dao.findDupIp(database_id, client_ip);
+	}
+
 }
