@@ -4,9 +4,12 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
@@ -22,6 +25,9 @@ public class QueryDao {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		Object resp = null;
+		
+		// map으로 테이블 데이터 받아서 put하고 반환하기
+		Map<String, Object> tableData = null;
 
 		try {
 			pstmt = con.prepareStatement(sql);
@@ -37,35 +43,54 @@ public class QueryDao {
 					}
 				}
 				
-				// emp 일 때
-				if (table.equalsIgnoreCase("emp")) {
-					resp = new ArrayList<Emp>();
-					// 데이터 받아서 넣기
-					// 이 부분의 확장성 -> 모든 테이블 레코드를 받아올 수 있도록
-					while (rs.next()) { // java connection, result 중 column을 동적으로 받아오는 방법
-						
-						int empno = rs.getInt("empno");
-						String ename = rs.getString("ename");
-						String job = rs.getString("job");
-						int mgr = rs.getInt("mgr");
-						Date hiredate = rs.getDate("hiredate");
-						double sal = rs.getDouble("sal");
-						double comm = rs.getDouble("comm");
-						int deptno = rs.getInt("deptno");
-						Emp emp = new Emp(empno, ename, job, mgr, hiredate, sal, comm, deptno);
-						((ArrayList<Emp>) resp).add(emp);
-					}
-				} else if (table.equalsIgnoreCase("dept")) {
-					resp = new ArrayList<Dept>();
+				resp = new ArrayList<Object>();
+				
+				while (rs.next()) {
+					// rs.getMetaData()
+					ResultSetMetaData rsmd = rs.getMetaData();
 					
-					while (rs.next()) {
-						int deptno = rs.getInt("deptno");
-						String dname = rs.getString("dname");
-						String loc = rs.getString("loc");
-						Dept dept = new Dept(deptno, dname, loc);
-						((ArrayList<Dept>) resp).add(dept);
+					int cols = rsmd.getColumnCount();
+					tableData = new HashMap<String, Object>();
+					
+					for (int i = 1; i <= cols; i++) {
+						String colName = rsmd.getColumnName(i);
+						Object colData = rs.getObject(i);
+						tableData.put(colName, colData);
 					}
+					
+					((ArrayList<Object>) resp).add(tableData);
 				}
+				
+				
+				// emp 일 때
+//				if (table.equalsIgnoreCase("emp")) {
+//					resp = new ArrayList<Emp>();
+//					// 데이터 받아서 넣기
+//					// 이 부분의 확장성 -> 모든 테이블 레코드를 받아올 수 있도록
+//					while (rs.next()) { // java connection, result 중 column을 동적으로 받아오는 방법
+//						
+//						int empno = rs.getInt("empno");
+//						String ename = rs.getString("ename");
+//						String job = rs.getString("job");
+//						int mgr = rs.getInt("mgr");
+//						Date hiredate = rs.getDate("hiredate");
+//						double sal = rs.getDouble("sal");
+//						double comm = rs.getDouble("comm");
+//						int deptno = rs.getInt("deptno");
+//						Emp emp = new Emp(empno, ename, job, mgr, hiredate, sal, comm, deptno);
+//						((ArrayList<Emp>) resp).add(emp);
+//					}
+//				} else if (table.equalsIgnoreCase("dept")) {
+//					resp = new ArrayList<Dept>();
+//					
+//					while (rs.next()) {
+//						int deptno = rs.getInt("deptno");
+//						String dname = rs.getString("dname");
+//						String loc = rs.getString("loc");
+//						Dept dept = new Dept(deptno, dname, loc);
+//						((ArrayList<Dept>) resp).add(dept);
+//					}
+//				}
 			}
 			// insert, update, delete일 때
 			else {
